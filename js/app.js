@@ -1,24 +1,31 @@
 var canvas = document.getElementById('myCanvas');
+var bounds = canvas.getBoundingClientRect(); //get reference to bounds
+var ctx = canvas.getContext("2d"); //get reference to the drawing context
+var requestAnimationFrame = window.requestAnimationFrame || 
+                            window.mozRequestAnimationFrame ||
+                            window.webkitRequestAnimationFrame ||
+                            window.msRequestAnimationFrame;
+
 window.onload = function() {
 
-var bounds = canvas.getBoundingClientRect();
-//get reference to the drawing context
-var ctx = canvas.getContext("2d");
-var started = false;
-
-
-function midPointBtw(p1, p2) {
+//finds midpoint between two points
+function findMidpoint(p1, p2) {
   return {
     x: p1.x + (p2.x - p1.x) / 2,
     y: p1.y + (p2.y - p1.y) / 2
   };
 }
 
-ctx.lineWidth = 10;
+//line properties
+ctx.lineWidth = 7;
 ctx.lineJoin = ctx.lineCap = 'round';
+ctx.shadowBlur = 7;
+ctx.shadowColor = 'rgb(0, 0, 0)';
 
 var isDrawing, points = [ ];
 
+
+//mouse events
 myCanvas.onmousedown = function(e) {
   isDrawing = true;
   points.push({ x: e.clientX-bounds.left, y: e.clientY-bounds.top });
@@ -41,7 +48,7 @@ myCanvas.onmousemove = function(e) {
   for (var i = 1, len = points.length; i < len; i++) {
     // we pick the point between pi+1 & pi+2 as the
     // end point and p1 as our control point
-    var midPoint = midPointBtw(p1, p2);
+    var midPoint = findMidpoint(p1, p2);
     ctx.quadraticCurveTo(p1.x, p1.y, midPoint.x, midPoint.y);
     p1 = points[i];
     p2 = points[i+1];
@@ -57,6 +64,64 @@ myCanvas.onmouseup = function() {
   isDrawing = false;
   points.length = 0;
 };
+
+var circles = new Array();
+
+function Circle(radius, speed, width, xPos, yPos) {
+  this.radius = radius;
+  this.speed = speed;
+  this.width = width;
+  this.xPos = xPos;
+  this.yPos = yPos;
+
+  this.counter = 0;
+
+  var signHelper = Math.floor(Math.random() * 2);
+
+  if(signHelper ==1) {
+    this.sign = -1;
+  } else {
+    this.sign = 1;
+  }
+}
+
+Circle.prototype.update = function() {
+  this.counter += this.sign * this.speed;
+  ctx.beginPath();
+  ctx.arc(this.xPos + Math.cos(this.counter / 100) * this.radius,
+          this.yPos + Math.sin(this.counter / 100) * this.radius,
+          this.width,
+          0,
+          Math.PI * 2,
+          false);
+  ctx.closePath();
+  ctx.fillStyle = 'rgb(0, 0, 0)';
+  ctx.fill();
+};
+
+function createCircles() {
+  for (var i=0; i<100; i++) {
+    var randomX = Math.round(-200 + Math.random() * 1000);
+    var randomY = Math.round(-200 + Math.random() * 800);
+    var speed = 0.2 + Math.random() * 3;
+    var size = 5 + Math.random() * 100;
+
+    var circle = new Circle(100, speed, size, randomX, randomY);
+    circles.push(circle);
+  }
+  draw();
+}
+createCircles();
+
+
+function draw() {
+  ctx.clearRect(0, 0, 800, 600);
+  for(var i=0; i<circles.length; i++) {
+    var myCircle = circles[i];
+    myCircle.update();
+  }
+  requestAnimationFrame(draw);
+}
 
 // function fadeOut() {
 //   context.fillStyle = "rgba(255,255,255,0.1)";
