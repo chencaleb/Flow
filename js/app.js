@@ -100,11 +100,11 @@ Circle.prototype.update = function() {
 };
 
 function createCircles() {
-  for (var i=0; i<100; i++) {
+  for (var i=0; i<200; i++) {
     var randomX = Math.round(-200 + Math.random() * 1000);
     var randomY = Math.round(-200 + Math.random() * 800);
     var speed = 0.2 + Math.random() * 3;
-    var size = 5 + Math.random() * 100;
+    var size = 5;
 
     var circle = new Circle(100, speed, size, randomX, randomY);
     circles.push(circle);
