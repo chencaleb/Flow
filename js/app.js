@@ -70,7 +70,7 @@ createCircles();
 
 
 function draw() {
-  ctx.clearRect(0, 0, 800, 600);
+  ctx.clearRect(0, 0, 800, 600); //overwrites pointer
   for(var i=0; i<circles.length; i++) {
     var myCircle = circles[i];
     myCircle.update();
