@@ -10,14 +10,6 @@ window.onload = function() {
 
 var circles = new Array();
 
-//finds midpoint between two points
-function findMidpoint(p1, p2) {
-  return {
-    x: p1.x + (p2.x - p1.x) / 2,
-    y: p1.y + (p2.y - p1.y) / 2
-  };
-}
-
 //circle constructor
 function Circle(radius, speed, width, xPos, yPos) {
   this.radius = radius;
@@ -68,9 +60,8 @@ function createCircles() {
 }
 createCircles();
 
-
 function draw() {
-  //ctx.clearRect(0, 0, 800, 600); //overwrites pointer
+  ctx.clearRect(0, 0, 800, 600); //overwrites pointer
   for(var i=0; i<circles.length; i++) {
     var myCircle = circles[i];
     myCircle.update();
@@ -87,11 +78,20 @@ ctx.shadowColor = 'rgb(255, 255, 255)';
 
 var isDrawing, points = [ ];
 
+//finds midpoint between two points
+function findMidpoint(p1, p2) {
+  return {
+    x: p1.x + (p2.x - p1.x) / 2,
+    y: p1.y + (p2.y - p1.y) / 2
+  };
+}
 
 //mouse events
 myCanvas.onmousedown = function(e) {
   isDrawing = true;
   points.push({ x: e.clientX-bounds.left, y: e.clientY-bounds.top });
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
 };
 
 myCanvas.onmousemove = function(e) {
@@ -128,12 +128,12 @@ myCanvas.onmouseup = function() {
   points.length = 0;
 };
 
-function fadeOut() {
-  context.fillStyle = "rgba(255,255,255,0.1)";
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  setTimeout(fadeOut, 500);
-}
+// function fadeOut() {
+//   context.fillStyle = "rgba(255,255,255,0.1)";
+//   context.fillRect(0, 0, canvas.width, canvas.height);
+//   setTimeout(fadeOut, 500);
+// }
 
-canvas.addEventListener('mousemove', onMouseEvent, false);
-fadeOut();
+// canvas.addEventListener('mousemove', onMouseEvent, false);
+// fadeOut();
 };
