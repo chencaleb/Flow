@@ -57,6 +57,7 @@ function mouseMoveFunction(event) {
 
 function mouseDownFunction(event) {
   isMouseDown = true;
+  console.log(mouseXPos, mouseYPos);
 }
 
 function mouseUpFunction(event) {
@@ -76,6 +77,70 @@ function createCircles(position, n) {
     circles.push(circle);
   }
 }
+
+
+
+
+//Write functions that gives the attributes for:
+function Coordinates(x, y) {
+  this.position = {x: x, y: y};
+}
+
+//calculate distance between points
+Coordinates.prototype.distanceTo = function(c) {
+  var distX = c.x-this.position.x;
+  var distY = p.y=this.position.y;
+  return Math.sqrt(distX^2 + distY^2);
+};
+
+//player
+function Player() {
+  this.position = {x: 0, y: 0};
+}
+Player.prototype = new Coordinates();
+
+//enemy
+function Enemy() {
+  this.position = {x: 0, y: 0};
+}
+Enemy.prototype = new Coordinates();
+
+//circles
+function Circle() {
+  this.position = {x: 0, y: 0};
+  this.color = "red";
+}
+Circle.prototype = new Coordinates();
+
+function evaluator() {
+  clearRect(0, 0, canvas.width, canvas.height);
+
+
+}
+
+//if game has started (mousedown/mousemove)
+//keep track of mouse position
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // //circle constructor
