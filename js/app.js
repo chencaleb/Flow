@@ -70,7 +70,7 @@ createCircles();
 
 
 function draw() {
-  ctx.clearRect(0, 0, 800, 600); //overwrites pointer
+  //ctx.clearRect(0, 0, 800, 600); //overwrites pointer
   for(var i=0; i<circles.length; i++) {
     var myCircle = circles[i];
     myCircle.update();
@@ -128,12 +128,12 @@ myCanvas.onmouseup = function() {
   points.length = 0;
 };
 
-// function fadeOut() {
-//   context.fillStyle = "rgba(255,255,255,0.1)";
-//   context.fillRect(0, 0, canvas.width, canvas.height);
-//   setTimeout(fadeOut, 500);
-// }
+function fadeOut() {
+  context.fillStyle = "rgba(255,255,255,0.1)";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  setTimeout(fadeOut, 500);
+}
 
-// canvas.addEventListener('mousemove', onMouseEvent, false);
-// fadeOut();
+canvas.addEventListener('mousemove', onMouseEvent, false);
+fadeOut();
 };
