@@ -15,7 +15,7 @@ var enemies = [];
 var circles = [];
 var player;
 
-var speed = {x: -1.5, y: 1};
+var speed = {x: -2, y: 1.5};
 
 
 window.onload = function() {
@@ -46,6 +46,11 @@ function startButtonFunction(event) {
 
   if(hasStarted === false) {
     hasStarted = true;
+    var aud = document.getElementById("song");
+    aud.load();
+    aud.play();
+    aud.volume = 0.5; 
+
 
     enemies = [];
     player.userPiece = [];
@@ -90,7 +95,7 @@ function evaluator() {
 
     //draws the tail
     ctx.beginPath();
-    ctx.strokeStyle = "white";
+    ctx.strokeStyle = "darkgrey";
     ctx.lineWidth = 3;
     ctx.shadowBlur = 10;
     ctx.shadowColor = 'rgb(255, 255, 255)';
@@ -138,6 +143,7 @@ function evaluator() {
     //   }
     // }
 
+    //Enemy movement
     ctx.beginPath();
     ctx.fillStyle = "#7DCDE8";
     ctx.shadowBlur = 10;
@@ -145,8 +151,8 @@ function evaluator() {
     ctx.arc(circle.position.x, circle.position.y, circle.size/2, 0, Math.PI*2, true);
     ctx.fill();
 
-    circle.position.x += speed.x * circle.force;
-    circle.position.y += speed.y * circle.force;
+    circle.position.x += speed.x * circle.movement;
+    circle.position.y += speed.y * circle.movement;
 
     if(circle.position.x < 0 || circle.position.y > canvas.height) {
       enemies.splice(i, 1);
@@ -198,19 +204,9 @@ Player.prototype = new Coordinates();
 function Enemy() {
   this.position = {x: 0, y: 0};
   this.size = 6 + (Math.random() * 5);
-  this.force = 1 + (Math.random() * 0.4);
+  this.movement = 1 + (Math.random() * 0.5);
 }
 Enemy.prototype = new Coordinates();
-
-//circle attributes
-// function Circle() {
-//   this.position = {x: 0, y: 0};
-//   this.color = "red";
-// }
-// Circle.prototype = new Coordinates();
-
-
-
 
 
 
