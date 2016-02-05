@@ -18,4 +18,8 @@ This project took multiple approaches, many of which failed and had to be scrapp
 Unsolved Problems
   1. Canvas is a work in progress and I am still attempting to learn the details and as such it was hard to incorporate         responsive design. I worked mostly in full screen mode and thus any change in the screen size will distort the             positioning as well as the mouse input. 
   2. As of now, I have not yet created a check for collision detection. It seems there are multiple areas that effect what      happens when the mouse collides with an object.
+  3. Site is not responsive. Needs a major reworking of CSS.
+  
+**Song taken from Geometry Dash "Back on Track".
+**Game inspired by Tilt to Live (Mobile), Sinuous(Hakim Experiment)
 
