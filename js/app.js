@@ -11,11 +11,11 @@ var isMouseDown = false;
 var hasStarted = false;
 
 
-var enemies;
+var enemies = [];
 var circles = [];
 var player;
 
-var speed = {x: -1.3, y: 1};
+var speed = {x: -1.5, y: 1};
 
 
 window.onload = function() {
@@ -47,10 +47,11 @@ function startButtonFunction(event) {
   if(hasStarted === false) {
     hasStarted = true;
 
-    circles = [];
+    enemies = [];
+    player.userPiece = [];
+    
     player.position.x = mouseXPos;
     player.position.y = mouseYPos;
-    player.userPiece = [];
   }
 }
 
@@ -73,23 +74,12 @@ function gameOver() {
   console.log("Game Over");
 }
 
-//create circle objects
-function createCircles(position, n) {
-  var temp = 10 + (Math.random() * 15);
-
-  while(--temp >=0) {
-    var circle = new Circle();
-    circle.position.x = position.x + (Math.sin(temp) * n);
-    circle.position.y = position.y + (Math.cos(temp) * n);
-    p.speed = {x: -4 + Math.random() * 8, y: -4 + Math.random() * 8};
-
-    circles.push(circle);
-  }
-}
-
 function evaluator() {
-
+  
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  var i;
+  
   if(hasStarted) {
 
     //This adjusts the delay of the mouse. Increasing the multipler will decrease delay.
@@ -98,29 +88,33 @@ function evaluator() {
 
     player.userPiece.push(new Coordinates(player.position.x, player.position.y));
 
+    //draws the tail
     ctx.beginPath();
-    ctx.strokeStyle = "black";
-    ctx.lineWidth = 4;
+    ctx.strokeStyle = "steelblue";
+    ctx.lineWidth = 3;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgb(255, 255, 255)';
 
-    for(var i=0; i<player.userPiece.length; i++) {
+    for(i=0; i<player.userPiece.length; i++) {
       circle = player.userPiece[i];
       ctx.lineTo(circle.position.x, circle.position.y);
       circle.position.x += speed.x;
       circle.position.y += speed.y;
     }
 
-  ctx.stroke();
-  ctx.closePath();
+    ctx.stroke();
+    ctx.closePath();
   
-  //Ensures that the length of the array never exceeds 35
-  if(player.userPiece.length > 35) {
-    player.userPiece.shift();
-  }
-  
-  ctx.beginPath();
-  ctx.fillStyle = "black";
-  ctx.arc(player.position.x, player.position.y, player.size/2, 0, Math.PI*2, true);
-  ctx.fill();
+    //Ensures that the length of the array never exceeds 35
+    if(player.userPiece.length > 40) {
+      player.userPiece.shift();
+    }
+    
+    //draws the head
+    ctx.beginPath();
+    ctx.fillStyle = "lightblue";
+    ctx.arc(player.position.x, player.position.y, 5, 0, Math.PI*2, true);
+    ctx.fill();
 
   }
 
@@ -132,9 +126,65 @@ function evaluator() {
 
 
 
+  //Creates enemies
+  for(i=0; i < enemies.length; i++) {
+    circle = enemies[i];
+
+    //Checks for collisions
+    if(hasStarted) {
+      if(circle.distanceTo(player.position) < (player.size + circle.size)/2) {
+        gameOver();
+
+      }
+    }
+
+    ctx.beginPath();
+    ctx.fillStyle = "#ff0000";
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgb(255, 255, 255)';
+    ctx.arc(circle.position.x, circle.position.y, circle.size/2, 0, Math.PI*2, true);
+    ctx.fill();
+
+    circle.position.x += speed.x;
+    circle.position.y += speed.y;
+
+    if(circle.position.x < 0 || circle.position.y > canvas.height) {
+      enemies.splice(i, 1);
+      i--;
+    } 
+  }
+
+  //Continues to generate enemies
+  if(enemies.length < 35) {
+    enemies.push(randomizeCircle(new Enemy()));
+  }
+
+  for(i=0; i<circles.length; i++) {
+    circle = circles[i];
+    circle.speed.x += (speed.x - circle.speed.x);
+    circle.speed.y += (speed.y - circle.speed.y);
+
+    circle.position.x += circle.speed.x;
+    circle.position.y += circle.speed.y;
+    ctx.fillStyle = "white";
+    ctx.fillRect(circle.position.x, circle.position.y, 1, 1);
+
+  }
 
 
 
+}
+
+function randomizeCircle(circle) {
+  if(Math.random() > 0.5) {
+    circle.position.x = Math.random() * canvas.width;
+    circle.position.y = -20;
+  } else {
+    circle.position.x = canvas.width + 20;
+    circle.position.y = (-canvas.height *0.2) + (Math.random() * canvas.height * 1.2);
+  }
+
+  return circle;
 }
 
 //Keeps track of current positions
@@ -152,12 +202,15 @@ Coordinates.prototype.distanceTo = function(circle) {
 //player attributes
 function Player() {
   this.position = {x: 0, y: 0};
+  this.size = 8;
+  this.userPiece = [];
 }
 Player.prototype = new Coordinates();
 
 //enemy attributes
 function Enemy() {
   this.position = {x: 0, y: 0};
+  this.size = 6 + (Math.random() * 5);
 }
 Enemy.prototype = new Coordinates();
 
