@@ -90,7 +90,7 @@ function evaluator() {
 
     //draws the tail
     ctx.beginPath();
-    ctx.strokeStyle = "steelblue";
+    ctx.strokeStyle = "white";
     ctx.lineWidth = 3;
     ctx.shadowBlur = 10;
     ctx.shadowColor = 'rgb(255, 255, 255)';
@@ -106,13 +106,13 @@ function evaluator() {
     ctx.closePath();
   
     //Ensures that the length of the array never exceeds 35
-    if(player.userPiece.length > 40) {
+    if(player.userPiece.length > 50) {
       player.userPiece.shift();
     }
     
     //draws the head
     ctx.beginPath();
-    ctx.fillStyle = "lightblue";
+    ctx.fillStyle = "darkgrey";
     ctx.arc(player.position.x, player.position.y, 5, 0, Math.PI*2, true);
     ctx.fill();
 
@@ -131,22 +131,22 @@ function evaluator() {
     circle = enemies[i];
 
     //Checks for collisions
-    if(hasStarted) {
-      if(circle.distanceTo(player.position) < (player.size + circle.size)/2) {
-        gameOver();
+    // if(hasStarted) {
+    //   if(circle.distanceTo(player.position) < (player.size + circle.size)/2) {
+    //     gameOver();
 
-      }
-    }
+    //   }
+    // }
 
     ctx.beginPath();
-    ctx.fillStyle = "#ff0000";
+    ctx.fillStyle = "#7DCDE8";
     ctx.shadowBlur = 10;
     ctx.shadowColor = 'rgb(255, 255, 255)';
     ctx.arc(circle.position.x, circle.position.y, circle.size/2, 0, Math.PI*2, true);
     ctx.fill();
 
-    circle.position.x += speed.x;
-    circle.position.y += speed.y;
+    circle.position.x += speed.x * circle.force;
+    circle.position.y += speed.y * circle.force;
 
     if(circle.position.x < 0 || circle.position.y > canvas.height) {
       enemies.splice(i, 1);
@@ -154,34 +154,21 @@ function evaluator() {
     } 
   }
 
-  //Continues to generate enemies
-  if(enemies.length < 35) {
+  //Continues to generate enemies as they leave canvas
+  if(enemies.length < 40) {
     enemies.push(randomizeCircle(new Enemy()));
   }
-
-  for(i=0; i<circles.length; i++) {
-    circle = circles[i];
-    circle.speed.x += (speed.x - circle.speed.x);
-    circle.speed.y += (speed.y - circle.speed.y);
-
-    circle.position.x += circle.speed.x;
-    circle.position.y += circle.speed.y;
-    ctx.fillStyle = "white";
-    ctx.fillRect(circle.position.x, circle.position.y, 1, 1);
-
-  }
-
-
-
 }
 
+
+//Generates a position for new enemies
 function randomizeCircle(circle) {
   if(Math.random() > 0.5) {
     circle.position.x = Math.random() * canvas.width;
     circle.position.y = -20;
   } else {
     circle.position.x = canvas.width + 20;
-    circle.position.y = (-canvas.height *0.2) + (Math.random() * canvas.height * 1.2);
+    circle.position.y = (-canvas.height *0.2) + (Math.random() * canvas.height * 1.5);
   }
 
   return circle;
@@ -211,15 +198,23 @@ Player.prototype = new Coordinates();
 function Enemy() {
   this.position = {x: 0, y: 0};
   this.size = 6 + (Math.random() * 5);
+  this.force = 1 + (Math.random() * 0.4);
 }
 Enemy.prototype = new Coordinates();
 
 //circle attributes
-function Circle() {
-  this.position = {x: 0, y: 0};
-  this.color = "red";
-}
-Circle.prototype = new Coordinates();
+// function Circle() {
+//   this.position = {x: 0, y: 0};
+//   this.color = "red";
+// }
+// Circle.prototype = new Coordinates();
+
+
+
+
+
+
+
 //if game has started (mousedown/mousemove) --check boolean
 //keep track of mouse position
 //generate circles and animate circles
