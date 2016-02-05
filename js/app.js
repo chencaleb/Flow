@@ -205,10 +205,10 @@ function evaluator() {
 function randomizeCircle(circle) {
   if(Math.random() > 0.5) {
     circle.position.x = Math.random() * canvas.width;
-    circle.position.y = -20;
+    circle.position.y = 0;
   } else {
-    circle.position.x = canvas.width + 20;
-    circle.position.y = (-canvas.height *0.2) + (Math.random() * canvas.height * 1.5);
+    circle.position.x = canvas.width;
+    circle.position.y = (-canvas.height *0.2) + (Math.random() * canvas.height);
   }
 
   return circle;
