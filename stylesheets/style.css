@@ -12,18 +12,33 @@ canvas {
     cursor: crosshair;
 }
 
+.info {
+    font-family: Futura;
+    font-size: 16px;
+    text-align: left;
+    position: absolute;
+    color: white;
+    display: inline;
+}
+
 #myCanvas {
 	background-color: black;
 }
 
-.container {
-    position: relative;
+#rules {
+    z-index: 10;
+    position: fixed;
+    top: 450px;
+    left: 300px;
+    display: inline;
+}
+
+#timer {
+    color: blue;
 }
 
 #startButton {
-    z-index: 99999;
-    position: fixed;
-    top: 30%;
-    left: 50%;
+    font-size: 46px;
+    color: white;
 }
 
