@@ -87,11 +87,12 @@ function createCircles(position, n) {
   }
 }
 
-
 function evaluator() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if(hasStarted) {
+
+    //This adjusts the delay of the mouse. Increasing the multipler will decrease delay.
     player.position.x += (mouseXPos - player.position.x) * 0.5;
     player.position.y += (mouseYPos - player.position.y) * 0.5;
 
@@ -111,7 +112,8 @@ function evaluator() {
   ctx.stroke();
   ctx.closePath();
   
-  if(player.userPiece.length > 25) {
+  //Ensures that the length of the array never exceeds 35
+  if(player.userPiece.length > 35) {
     player.userPiece.shift();
   }
   
@@ -121,6 +123,18 @@ function evaluator() {
   ctx.fill();
 
   }
+
+  //Player loses if he leaves the bounds of the screen
+  if(hasStarted && (player.position.x < 0 || player.position.y < 0 ||
+                    player.position.x > canvas.width || player.position.y > canvas.height)) {
+    gameOver();
+  }
+
+
+
+
+
+
 }
 
 //Keeps track of current positions

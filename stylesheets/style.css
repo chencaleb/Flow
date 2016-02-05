@@ -14,3 +14,14 @@ canvas {
 #myCanvas {
 	background-color: lightblue;
 }
+
+.container {
+    position: relative;
+}
+
+#startButton {
+    z-index: 99999;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+}
