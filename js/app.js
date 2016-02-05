@@ -163,12 +163,7 @@ function evaluator() {
   for(i=0; i < enemies.length; i++) {
     circle = enemies[i];
 
-    //Checks for collisions
-    // if(hasStarted) {
-    //   if(circle.distanceTo(player.position) < (player.size + circle.size)/5) {
-    //      gameOver();
-    //   }
-    // }
+    //Checks for collisions *****************
 
     //Enemy movement
     ctx.beginPath();
