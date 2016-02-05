@@ -12,7 +12,8 @@ var hasStarted = false;
 
 
 var enemies;
-var circles;
+var circles = [];
+var player;
 
 var speed = {x: -1.3, y: 1};
 
@@ -32,9 +33,12 @@ startButton = document.getElementById("startButton");
 document.addEventListener("mousemove", mouseMoveFunction, false);
 document.addEventListener("mousedown", mouseDownFunction, false);
 document.addEventListener("mouseup", mouseUpFunction, false);
+
 startButton.addEventListener("click", startButtonFunction, false);
+
 player = new Player();
 
+setInterval(evaluator, 1000 / 60);
 };
 
 function startButtonFunction(event) {
@@ -44,9 +48,9 @@ function startButtonFunction(event) {
     hasStarted = true;
 
     circles = [];
-
     player.position.x = mouseXPos;
     player.position.y = mouseYPos;
+    player.userPiece = [];
   }
 }
 
@@ -64,6 +68,11 @@ function mouseUpFunction(event) {
   isMouseDown = false;
 }
 
+function gameOver() {
+  hasStarted = false;
+  console.log("Game Over");
+}
+
 //create circle objects
 function createCircles(position, n) {
   var temp = 10 + (Math.random() * 15);
@@ -79,48 +88,95 @@ function createCircles(position, n) {
 }
 
 
+function evaluator() {
 
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if(hasStarted) {
+    player.position.x += (mouseXPos - player.position.x) * 0.5;
+    player.position.y += (mouseYPos - player.position.y) * 0.5;
 
-//Write functions that gives the attributes for:
+    player.userPiece.push(new Coordinates(player.position.x, player.position.y));
+
+    ctx.beginPath();
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 4;
+
+    for(var i=0; i<player.userPiece.length; i++) {
+      circle = player.userPiece[i];
+      ctx.lineTo(circle.position.x, circle.position.y);
+      circle.position.x += speed.x;
+      circle.position.y += speed.y;
+    }
+
+  ctx.stroke();
+  ctx.closePath();
+  
+  if(player.userPiece.length > 25) {
+    player.userPiece.shift();
+  }
+  
+  ctx.beginPath();
+  ctx.fillStyle = "black";
+  ctx.arc(player.position.x, player.position.y, player.size/2, 0, Math.PI*2, true);
+  ctx.fill();
+
+  }
+}
+
+//Keeps track of current positions
 function Coordinates(x, y) {
   this.position = {x: x, y: y};
 }
 
 //calculate distance between points
-Coordinates.prototype.distanceTo = function(c) {
-  var distX = c.x-this.position.x;
-  var distY = p.y=this.position.y;
+Coordinates.prototype.distanceTo = function(circle) {
+  var distX = circle.x-this.position.x;
+  var distY = circle.y=this.position.y;
   return Math.sqrt(distX^2 + distY^2);
 };
 
-//player
+//player attributes
 function Player() {
   this.position = {x: 0, y: 0};
 }
 Player.prototype = new Coordinates();
 
-//enemy
+//enemy attributes
 function Enemy() {
   this.position = {x: 0, y: 0};
 }
 Enemy.prototype = new Coordinates();
 
-//circles
+//circle attributes
 function Circle() {
   this.position = {x: 0, y: 0};
   this.color = "red";
 }
 Circle.prototype = new Coordinates();
-
-function evaluator() {
-  clearRect(0, 0, canvas.width, canvas.height);
-
-
-}
-
-//if game has started (mousedown/mousemove)
+//if game has started (mousedown/mousemove) --check boolean
 //keep track of mouse position
+//generate circles and animate circles
 
+//draw mouse movement using sin/cos curves (quadraticCurveTo)
+//instead of draw and clear to animate, establish a path using mouse position
+//and append position into an array that creates a line of set length
+    //create new array to store position of mouse
+    //for loop to iterate through position array
+    //if length of array gets too high, "shift" to pop off first index
+    //this will create a short line segment without having to animate
+    //functions beginPath, stroke, closePath to initiate sequence of drawing line
+    //use arc, fill to color the line and give it a flowing movement
+
+
+//if mouse goes off canvas, game over
+    //coordinates for canvas are 0,0
+    //if mouse has negative coordinate == game over
+
+
+
+
+
+//if mouse position == enemy position, game over
 
 
 
