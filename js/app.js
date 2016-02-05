@@ -159,8 +159,6 @@ function evaluator() {
     gameOver();
   }
 
-
-
   //Creates enemies
   for(i=0; i < enemies.length; i++) {
     circle = enemies[i];
@@ -200,7 +198,6 @@ function evaluator() {
   }
 }
 
-
 //Generates a position for new enemies
 function randomizeCircle(circle) {
   if(Math.random() > 0.5) {
@@ -210,6 +207,5 @@ function randomizeCircle(circle) {
     circle.position.x = canvas.width;
     circle.position.y = (-canvas.height *0.2) + (Math.random() * canvas.height);
   }
-
   return circle;
 }
