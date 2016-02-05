@@ -20,7 +20,14 @@ canvas {
     color: white;
     display: inline;
 }
-
+#gg {
+    left: 440px;
+    top: 240px;
+    color: white;
+    font-family: Futura;
+    position: absolute;
+    font-size: 60px;
+}
 #myCanvas {
 	background-color: black;
 }
@@ -32,13 +39,14 @@ canvas {
     left: 300px;
     display: inline;
 }
-
-#timer {
-    color: blue;
-}
-
 #startButton {
     font-size: 46px;
     color: white;
 }
 
+#timer {
+    color: white;
+    left: 250px;
+    top: 30px;
+    font-size: 18px;
+}

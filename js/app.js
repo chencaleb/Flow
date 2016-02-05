@@ -105,7 +105,7 @@ Player.prototype = new Coordinates();
 function Enemy() {
   this.position = {x: 0, y: 0};
   this.size = 6 + (Math.random() * 5);
-  this.movement = 1 + (Math.random() * 0.5);
+  this.movement = 1 + (Math.random() * 0.75);
 }
 Enemy.prototype = new Coordinates();
 
@@ -166,11 +166,11 @@ function evaluator() {
     circle = enemies[i];
 
     //Checks for collisions
-    if(hasStarted) {
-      if(circle.distanceTo(player.position) < (player.size + circle.size)/5) {
-         gameOver();
-      }
-    }
+    // if(hasStarted) {
+    //   if(circle.distanceTo(player.position) < (player.size + circle.size)/5) {
+    //      gameOver();
+    //   }
+    // }
 
     //Enemy movement
     ctx.beginPath();
@@ -190,7 +190,7 @@ function evaluator() {
   }
 
   //Continues to generate enemies as they leave canvas
-  if(enemies.length < 40) {
+  if(enemies.length < 70) {
     enemies.push(randomizeCircle(new Enemy()));
   }
 
@@ -213,36 +213,3 @@ function randomizeCircle(circle) {
 
   return circle;
 }
-
-/**
-  *   PSEUDO CODE
-  *
-  **/
-
-/**
-Build event listeners/constructors
-
-if game has started (mousedown/mousemove)
-  keep track of mouse position
-
-Animation
-
-instead of draw and clear to animate, establish a path using mouse position
-and append position into an array that creates a line of set length
-    create new array to store position of mouse
-    for loop to iterate through position array
-    if length of array gets too high, "shift" to pop off first index
-    this will create a short line segment without having to animate
-    functions beginPath, stroke, closePath to initiate sequence of drawing line
-    use arc to provide for shape, fill to color the line, and sin/cos will give it a flowing movement
-
-
-if mouse goes off canvas, game over
-    coordinates for canvas are 0,0
-    if mouse has negative coordinate == game over
-    if mouse exceeds right and bottom of canvas
-
-generate circles and animate circles
-
-if mouse position == enemy position, game over
-**/
